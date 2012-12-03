@@ -31,6 +31,7 @@ define([
     var widget = $(WIDGET_HTML)
       .prependTo($(webmakerNav.container).find("ul.user-info"))
       .find(".badge-ui-widget");
+    var resizer = widget.find(".badge-ui-resizer");
     var alertContainer = $(options.alertContainer || widget);
     var alertSlideSpeed = options.alertSlideSpeed || 350;
     var alertDisplayTime = options.alertDisplayTime || 3200;
@@ -115,6 +116,55 @@ define([
       }
       $(".badge-ui-alert", widget).remove();
     });
+
+    // vertical resize handling for the badges list
+    (function(document, widgetArea, resizer) {
+      // regulatory variable
+      var resizing = false;
+      var height = false;
+      var mark = false;
+
+      // handling while the mouse is being dragged
+      var handleResize = function(event) {
+        if(resizing) {
+          console.log("handle resize");
+          console.log(height, mark, event.clientY);
+
+          $(widgetArea).height(height + (event.clientY-mark));
+          $(widgetArea).css("max-height", (height + (event.clientY-mark))+"px");
+        }
+      };
+
+      // stop handling the resize and unbind the event listeners
+      var stopHandlingResize = function(event) {
+        if (resizing) {
+          console.log("stop handling resize");
+          document.removeEventListener("mousemove", handleResize, false);
+          document.removeEventListener("mouseup", stopHandlingResize, false);
+          resizing = false;
+        }
+      }
+
+      // starting point - triggered when user clicks on resize bar
+      resizer.mousedown(function(event) {
+        if(!resizing) {
+          console.log("resizer.mousedown");
+          console.log(event.clientY, event.offsetY);
+          resizing = true;
+          mark = event.clientY;
+          height = widgetArea.clientHeight;
+          // prevent click-drag selecting text on the page
+          if(event.preventDefault) event.preventDefault();
+          if(event.stopPropagation) event.stopPropagation();
+          // start listening for mousedrag/release
+          document.addEventListener("mousemove", handleResize, false);
+          document.addEventListener("mouseup", stopHandlingResize, false);
+        }
+      });
+
+    }(document, widget.find(".tooltip-big-inner")[0], resizer));
+
+
 
     $("button", backpackPanel).click(function() {
       var assertions = [];

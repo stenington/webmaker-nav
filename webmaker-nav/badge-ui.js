@@ -12,7 +12,7 @@ define([
       return badge.isEarned;
     }).sort(function(a, b) { return b.issuedOn - a.issuedOn; });
   }
-  
+
   function getUnearnedBadges(badger) {
     return badger.getBadges().filter(function(badge) {
       return !badge.isEarned;
@@ -24,10 +24,10 @@ define([
       return 0;
     });
   }
-  
+
   return function BadgeUI(webmakerNav, options) {
     options = options || {};
-    
+
     var widget = $(WIDGET_HTML)
       .prependTo($(webmakerNav.container).find("ul.user-info"))
       .find(".badge-ui-widget");
@@ -60,15 +60,15 @@ define([
               item.appendTo(list);
             });
           }
-          
+
           makeBadgeList(getUnearnedBadges(badger), unearnedBadgeList);
           makeBadgeList(getEarnedBadges(badger), earnedBadgeList);
         }
-        
+
         self.badger = badger;
         if (!badger)
           return;
-        
+
         badger.on("change:unreadBadgeCount", function() {
           var unread = badger.unreadBadgeCount;
           $('.badge-ui-unread', widget).toggle(unread > 0)

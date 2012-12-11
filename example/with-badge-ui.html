@@ -33,9 +33,9 @@
     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
     proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p><input type="checkbox" id="fail-on-init"> 
+    <p><input type="checkbox" id="fail-on-init">
       Simulate badge server initialization failure</p>
-    <p>Simulated badge server response time (ms): 
+    <p>Simulated badge server response time (ms):
       <input type="text" id="response-time" value="0"></p>
   </div>
 
@@ -60,7 +60,7 @@
     "clopenbadger/test/fake-clopenbadger-server"
   ], function( $, Webmaker, BadgeUI, Clopenbadger, FakeServer ) {
     var fakeServerURL = "http://fake-clopenbadger";
-    
+
     FakeServer.setup({
       urlPrefix: fakeServerURL,
       availableBadges: {
@@ -68,7 +68,7 @@
           "name": "First Login",
           "description": "Like a champion, you logged in...",
           "criteria": "Can log into a site that uses Persona for auth.",
-          "image": "https://beta.openbadges.org/_badges/c75f6ade273258df1fd76cf41db8c8b5.png",
+          "image": "https://badges.webmaker.org/badge/image/thimble-projectizer.png",
           "behaviors": [{"name": "LOGGED_IN", "score": 1}],
           "prerequisites": []
         },
@@ -76,8 +76,24 @@
           "name": "Feedback Maniac",
           "description": "You busted feedback.",
           "criteria": "Can submit feedback.",
-          "image": "https://wiki.mozilla.org/images/b/bb/Merit-badge.png",
+          "image": "https://badges.webmaker.org/badge/image/code-whisperer.png",
           "behaviors": [{"name": "GAVE_FEEDBACK", "score": 1}],
+          "prerequisites": []
+        },
+        "MASTER_SETTER": {
+          "name": "Master Setter",
+          "description": "You changed all the settings.",
+          "criteria": "Can change the thimble settings.",
+          "image": "https://badges.webmaker.org/badge/image/a-lister.png",
+          "behaviors": [{"name": "CHANGED_SETTINGS", "score": 1}],
+          "prerequisites": []
+        },
+        "PAINTER": {
+          "name": "Painter",
+          "description": "You changed the styling of your page.",
+          "criteria": "Can change CSS.",
+          "image": "https://badges.webmaker.org/badge/image/super-styler.png",
+          "behaviors": [{"name": "CHANGED_CSS", "score": 1}],
           "prerequisites": []
         }
       }

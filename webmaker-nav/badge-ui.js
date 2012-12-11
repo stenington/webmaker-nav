@@ -122,7 +122,7 @@ define([
       var resizing = false;
       var height = false;
       var mark = false;
-      var style = document.defaultView.getComputedStyle(resizableArea, null);
+      var style = window.getComputedStyle(resizableArea);
 
       var htmlElement = false;
       var dc = document.childNodes, i=dc.length-1;
@@ -150,11 +150,10 @@ define([
           document.removeEventListener("mousemove", handleResize, false);
           document.removeEventListener("mouseup", stopHandlingResize, false);
           // set toplevel element class
-          document.childNodes[1]
           $(htmlElement).removeClass("badge-ui-resizing");
           resizing = false;
         }
-      }
+      };
 
       // starting point - triggered when user clicks on resize bar
       resizer.mousedown(function(event) {
@@ -177,8 +176,6 @@ define([
       });
 
     }(document, widget.find(".tooltip-big-inner")[0], widget.find(".badge-ui-resizer")));
-
-
 
     $("button", backpackPanel).click(function() {
       var assertions = [];

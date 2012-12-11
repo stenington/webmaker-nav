@@ -126,19 +126,19 @@ define([
 
       var htmlElement = false;
       var dc = document.childNodes, i=dc.length-1;
-      while(i>=0) {
+      while (i >= 0) {
         htmlElement = dc[i];
-        if(htmlElement.nodeName.toLowerCase() === "html") {
+        if (htmlElement.nodeName.toLowerCase() === "html") {
           break; }}
 
-      // serious problem?
-      if(htmlElement.nodeName.toLowerCase() !== "html") {
-        throw "could not find the document's top level <html> element!";
+      // not found?
+      if (htmlElement.nodeName.toLowerCase() !== "html") {
+        htmlElement = false;
       }
 
       // handling while the mouse is being dragged
       var handleResize = function(event) {
-        if(resizing) {
+        if (resizing) {
           $(resizableArea).height(height + (event.clientY-mark));
           $(resizableArea).css("max-height", (height + (event.clientY-mark))+"px");
         }
@@ -150,14 +150,16 @@ define([
           document.removeEventListener("mousemove", handleResize, false);
           document.removeEventListener("mouseup", stopHandlingResize, false);
           // set toplevel element class
-          $(htmlElement).removeClass("badge-ui-resizing");
+          if (htmlElement) {
+            $(htmlElement).removeClass("badge-ui-resizing");
+          }
           resizing = false;
         }
       };
 
       // starting point - triggered when user clicks on resize bar
       resizer.mousedown(function(event) {
-        if(!resizing) {
+        if (!resizing) {
           resizing = true;
           mark = event.clientY;
           height = resizableArea.clientHeight;
@@ -165,13 +167,15 @@ define([
           height -= padding;
 
           // prevent click-drag selecting text on the page
-          if(event.preventDefault) event.preventDefault();
-          if(event.stopPropagation) event.stopPropagation();
+          if (event.preventDefault) event.preventDefault();
+          if (event.stopPropagation) event.stopPropagation();
 
           // start listening for mousedrag/release
           document.addEventListener("mousemove", handleResize, false);
           document.addEventListener("mouseup", stopHandlingResize, false);
-          $(htmlElement).addClass("badge-ui-resizing");
+          if (htmlElement) {
+            $(htmlElement).addClass("badge-ui-resizing");
+          }
         }
       });
 

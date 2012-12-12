@@ -94,14 +94,46 @@
   font-size: 10px;
 }
 
-.badge-ui-unearned-badges li .badge-ui-img {
-  background-image: url(../img/badge-unearned.png);
-  width: 64px;
-  height: 64px;
-  background-size: 64px 64px;
-}
+/* hide the badge description for unearned badges (TODO: should we?) */
 
-.badge-ui-unearned-badges li .badge-ui-img img,
 .badge-ui-unearned-badges li .badge-ui-desc {
   display: none;
+}
+
+/* unearned badges show as grey-tinted images (using a lerped mix between the grey blank template and the badge image)  */
+
+.badge-ui-unearned-badges li .badge-ui-img {
+  display: inline-block;
+  width: 64px;
+  opacity: 0.15;
+}
+
+.badge-ui-unearned-badges li .badge-ui-img img {
+  width: 100%;
+}
+
+.badge-ui-unearned-badges li .badge-ui-img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: url(../img/badge-unearned-darker.png);
+  background-size: 64px auto;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+}
+
+/* line up the badges with the titles in the unearned list: */
+
+.badge-ui-unearned-badges li {
+  display: table;
+}
+
+.badge-ui-unearned-badges li .badge-ui-img,
+.badge-ui-unearned-badges li .badge-ui-bd  {
+  position: relative;
+  display: table-cell;
+  vertical-align: middle;
 }

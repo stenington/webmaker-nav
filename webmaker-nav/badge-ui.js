@@ -116,6 +116,71 @@ define([
       $(".badge-ui-alert", widget).remove();
     });
 
+    // vertical resize handling for the badges list
+    (function(document, resizableArea, resizer) {
+      // regulatory variable
+      var resizing = false;
+      var height = false;
+      var mark = false;
+      var style = window.getComputedStyle(resizableArea);
+
+      var htmlElement = false;
+      var dc = document.childNodes, i=dc.length-1;
+      while (i >= 0) {
+        htmlElement = dc[i];
+        if (htmlElement.nodeName.toLowerCase() === "html") {
+          break; }}
+
+      // not found?
+      if (htmlElement.nodeName.toLowerCase() !== "html") {
+        htmlElement = false;
+      }
+
+      // handling while the mouse is being dragged
+      var handleResize = function(event) {
+        if (resizing) {
+          $(resizableArea).height(height + (event.clientY-mark));
+          $(resizableArea).css("max-height", (height + (event.clientY-mark))+"px");
+        }
+      };
+
+      // stop handling the resize and unbind the event listeners
+      var stopHandlingResize = function(event) {
+        if (resizing) {
+          document.removeEventListener("mousemove", handleResize, false);
+          document.removeEventListener("mouseup", stopHandlingResize, false);
+          // set toplevel element class
+          if (htmlElement) {
+            $(htmlElement).removeClass("badge-ui-resizing");
+          }
+          resizing = false;
+        }
+      };
+
+      // starting point - triggered when user clicks on resize bar
+      resizer.mousedown(function(event) {
+        if (!resizing) {
+          resizing = true;
+          mark = event.clientY;
+          height = resizableArea.clientHeight;
+          var padding = parseInt(style.getPropertyValue("padding-top")) + parseInt(style.getPropertyValue("padding-bottom"));
+          height -= padding;
+
+          // prevent click-drag selecting text on the page
+          if (event.preventDefault) event.preventDefault();
+          if (event.stopPropagation) event.stopPropagation();
+
+          // start listening for mousedrag/release
+          document.addEventListener("mousemove", handleResize, false);
+          document.addEventListener("mouseup", stopHandlingResize, false);
+          if (htmlElement) {
+            $(htmlElement).addClass("badge-ui-resizing");
+          }
+        }
+      });
+
+    }(document, widget.find(".tooltip-big-inner")[0], widget.find(".badge-ui-resizer")));
+
     $("button", backpackPanel).click(function() {
       var assertions = [];
       widget.click();
